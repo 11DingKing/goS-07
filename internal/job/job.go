@@ -46,13 +46,11 @@ func (s *Scheduler) WithDefaults() *Scheduler {
 
 // Start launches all registered jobs. It returns immediately.
 func (s *Scheduler) Start(ctx context.Context) {
-	// Dispatch duties must keep running even if the caller hands in a
-	// short-lived context, so the job loops get their own context derived from
-	// the caller's values.
-	jobCtx := context.WithoutCancel(ctx)
+	// The job loops use the caller's context directly so that cancelling it
+	// during shutdown stops every loop and Wait can return.
 	for _, j := range s.jobs {
 		s.wg.Add(1)
-		go s.runLoop(jobCtx, j)
+		go s.runLoop(ctx, j)
 	}
 }
 
