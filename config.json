@@ -1,0 +1,15 @@
+{
+  "listen_addr": ":49495",
+  "store_path": "data/state.json",
+  "escalation_timeout": "4h",
+  "off_grid_deadline": "90s",
+  "heartbeat_timeout": "10s",
+  "failover_grace": "10s",
+  "soc_alarm_threshold": 15.0,
+  "snapshot_interval": "5s",
+  "health_check_interval": "1s",
+  "escalation_check_interval": "30s",
+  "black_start_transition": "90s",
+  "inspection_temp_limit": 55.0,
+  "insulation_min_mohm": 0.5
+}

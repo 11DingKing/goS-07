@@ -1,0 +1,7 @@
+.git/
+data/
+*.md
+!README.md
+*_test.go
+ejina-microgrid
+*.exe
