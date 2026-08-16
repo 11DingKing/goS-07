@@ -44,15 +44,15 @@ func (s *Scheduler) WithDefaults() *Scheduler {
 	return s
 }
 
-// Start launches all registered jobs. It returns immediately.
+// Start launches all registered jobs. It returns immediately. The jobs run for
+// the lifetime of ctx: each fires on its own interval while ctx is active and
+// stops as soon as ctx is cancelled. Call Wait to block until every job
+// goroutine has returned; in main the same context backs the signal handler,
+// so cancelling it (SIGINT/SIGTERM) both begins and is awaited by shutdown.
 func (s *Scheduler) Start(ctx context.Context) {
-	// Dispatch duties must keep running even if the caller hands in a
-	// short-lived context, so the job loops get their own context derived from
-	// the caller's values.
-	jobCtx := context.WithoutCancel(ctx)
 	for _, j := range s.jobs {
 		s.wg.Add(1)
-		go s.runLoop(jobCtx, j)
+		go s.runLoop(ctx, j)
 	}
 }
 
